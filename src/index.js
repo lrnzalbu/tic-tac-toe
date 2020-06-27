@@ -114,7 +114,7 @@ class Game extends React.Component {
 
     const moves = history.map((_, step) => {
       const desc = step > 0 ? 
-        'Go to move #' + step : 
+        'Go to move #' + (step) : 
         'Go to game start';
 
       return (
@@ -153,7 +153,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol reversed>{moves.reverse()}</ol>
         </div>
       </div>
     );
