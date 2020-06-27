@@ -1,33 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
-// class Square extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       value: null
-//     };
-//   }
-
-//   render() {
-//     return (
-//       <button 
-//       className="square" 
-//       onClick={ () => this.props.onClick() } >
-//         {this.props.value}
-//       </button>
-//     );
-//   }
-// }
+import { Button } from '@material-ui/core';
 
 function Square(props) {
   return (
-    <button
+    <Button
+    variant='outlined'
+    color='primary'
     className='square'
     onClick={props.onClick}>
       {props.value}
-    </button>
+    </Button>
   );
 }
 
@@ -35,6 +19,7 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square 
+        key={i}
         value={this.props.squares[i]} 
         onClick={() => this.props.onClick(i)}
       />
@@ -42,24 +27,18 @@ class Board extends React.Component {
   }
 
   render() {
+
+    const rows = [];
+    for (let i = 0; i < 3; ++i) {
+      const row = [];
+      for (let j = 0; j < 3; ++j) {
+        row.push(this.renderSquare(3 * i + j));
+      }
+      rows.push(<div key={i} className="board-row">{ row }</div>);
+    }
+
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
+      <div>{ rows }</div>
     );
   }
 }
@@ -112,11 +91,14 @@ class Game extends React.Component {
 
       return (
         <li key={step}>
-          <button onClick={() => this.jumpTo(step)}> {
+          <Button 
+            variant='outlined'
+            color='primary'
+            onClick={() => this.jumpTo(step)}> {
             step === this.state.stepNumber ? 
               <strong>{desc}</strong> :
               desc
-          } </button>
+          } </Button>
         </li>
       )
     })
