@@ -1,4 +1,4 @@
-[Jogo da Vó](https://app.netlify.com/sites/jogo-da-vo/overview)
+[Jogo da Vó](https://jogo-da-vo.netlify.app/)
 
 ![1](https://github.com/lzralbu/tic-tac-toe/blob/master/image/next.png?raw=true)
 
