@@ -22,7 +22,6 @@ class Board extends React.Component {
       <Square 
         key={'square' + i}
         won={this.props.result.slice(1).reduce((acc, value) => acc || value.includes(i), false)}
-        // won={this.props.result[1].includes(i)}
         value={this.props.squares[i]} 
         onClick={() => this.props.onClick(i)}
       />
@@ -56,19 +55,6 @@ class Board extends React.Component {
     return (
       <div>{ rows }</div>
     );
-
-    // const rows = [];
-    // for (let i = 0; i < 3; ++i) {
-    //   const row = [];
-    //   for (let j = 0; j < 3; ++j) {
-    //     row.push(this.renderSquare(3 * i + j));
-    //   }
-    //   rows.push(<div key={i} className="board-row">{ row }</div>);
-    // }
-
-    // return (
-    //   <div>{ rows }</div>
-    // );
   }
 }
 
@@ -181,40 +167,23 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  let result = [];
+  const result = [];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      // return [squares[a], lines[i]];
-      // console.log('A BUCETA DA SUA MÃE É GORDAÇA!!');
       if (result.length === 0) {
-        result = result.concat([squares[a], lines[i]]);
+        result.push(squares[a]);
       }
-      else {
-        // console.log('LENGTH > 0');
-        result.push(lines[i]);
-      }
+      result.push(lines[i]);
     }
   }
-  // console.log('RESULT OUT: ' + result);
   if (result.length > 0) {
-    // console.log('RESULT IN: ' + result);
     return result;
   }
 
-  let countX = 0;
-  let countO = 0;
-  for (let player of squares) {
-    if (player === 'X') {
-      ++countX;
-    }
-    else
-    if (player === 'O') {
-      ++countO;
-    }
+  if (squares.every(v => v === 'X' || v === 'O')) {
+    return ['DRAW', []];
   }
-
-  if (countX + countO === 9) return ['DRAW', []];
 
   return ['LET IT GO', []];
 }
