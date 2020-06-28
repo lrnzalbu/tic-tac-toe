@@ -20,8 +20,9 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square 
-        key={i}
-        won={this.props.result[1].includes(i)}
+        key={'square' + i}
+        won={this.props.result.slice(1).reduce((acc, value) => acc || value.includes(i), false)}
+        // won={this.props.result[1].includes(i)}
         value={this.props.squares[i]} 
         onClick={() => this.props.onClick(i)}
       />
@@ -35,7 +36,8 @@ class Board extends React.Component {
       const row = [];
       for (let j = 0; j < 3; ++j) {
         row.push(
-          <Grid item>
+          <Grid item
+            key={'grid-item' + (3 * i + j)}>
             {this.renderSquare(3 * i + j)}
           </Grid>
         )
@@ -44,7 +46,7 @@ class Board extends React.Component {
         <Grid 
           container
           spacing={2}
-          key={i} 
+          key={'grid-row' + i} 
           className="board-row">
           { row }
         </Grid>
@@ -90,6 +92,7 @@ class Game extends React.Component {
     if (result[0] === 'X' || result[0] === 'O' || squares[i]) {
       return;
     }
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat({
@@ -153,7 +156,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol reversed>{moves.reverse()}</ol>
+          <ul >{moves.reverse()}</ul>
         </div>
       </div>
     );
@@ -178,11 +181,25 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+  let result = [];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return [squares[a], lines[i]];
+      // return [squares[a], lines[i]];
+      // console.log('A BUCETA DA SUA MÃE É GORDAÇA!!');
+      if (result.length === 0) {
+        result = result.concat([squares[a], lines[i]]);
+      }
+      else {
+        // console.log('LENGTH > 0');
+        result.push(lines[i]);
+      }
     }
+  }
+  // console.log('RESULT OUT: ' + result);
+  if (result.length > 0) {
+    // console.log('RESULT IN: ' + result);
+    return result;
   }
 
   let countX = 0;
